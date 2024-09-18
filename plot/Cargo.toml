@@ -1,0 +1,9 @@
+[package]
+name = "plot"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+delatin = { path = "../lib" }
+plotters = "0.3.7"
+serde_json = "1.0.48"
