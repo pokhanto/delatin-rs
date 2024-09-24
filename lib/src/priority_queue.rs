@@ -1,13 +1,11 @@
-use rustc_hash::FxHashMap;
-
 use crate::Error;
 
 #[derive(Debug, Clone)]
 pub(crate) struct PriorityQueue {
     /// Priority queue of triangles based on error
     triangle_queue: Vec<usize>,
-    /// Map of triangle indices to their positions in the priority queue for faster retrieval
-    triangle_queue_indices: FxHashMap<usize, Option<usize>>,
+    /// Vector of triangle indices to their positions in the priority queue for faster retrieval
+    triangle_queue_indices: Vec<Option<usize>>,
     /// Errors associated with triangles
     triangle_errors: Vec<Error>,
     /// Pending triangles to be processed
@@ -15,9 +13,9 @@ pub(crate) struct PriorityQueue {
 }
 
 impl PriorityQueue {
-    pub fn default() -> Self {
+    pub fn new(queue_len: usize) -> Self {
         Self {
-            triangle_queue_indices: FxHashMap::default(),
+            triangle_queue_indices: vec![None; queue_len],
             pending_triangle_indices: Vec::default(),
             triangle_queue: Vec::default(),
             triangle_errors: Vec::default(),
@@ -25,7 +23,6 @@ impl PriorityQueue {
     }
 
     pub fn add_pending_triangle(&mut self, t: usize) {
-        self.triangle_queue_indices.insert(t, None);
         self.pending_triangle_indices.push(t);
     }
 
@@ -40,8 +37,7 @@ impl PriorityQueue {
     pub fn push(&mut self, triangle_index: usize, error: Error) {
         let queue_length = self.triangle_queue.len();
 
-        self.triangle_queue_indices
-            .insert(triangle_index, Some(queue_length));
+        self.triangle_queue_indices[triangle_index] = Some(queue_length);
         self.triangle_queue.push(triangle_index);
         self.triangle_errors.push(error);
         self.up(queue_length);
@@ -56,7 +52,7 @@ impl PriorityQueue {
     }
 
     pub fn remove(&mut self, requested_triangle_index: usize) {
-        let Some(index) = self.triangle_queue_indices[&requested_triangle_index] else {
+        let Some(index) = self.triangle_queue_indices[requested_triangle_index] else {
             let pending_length = self.pending_triangle_indices.len();
             if let Some(pos) = self
                 .pending_triangle_indices
@@ -130,9 +126,9 @@ impl PriorityQueue {
     fn swap(&mut self, i: usize, j: usize) {
         let pi = self.triangle_queue[i];
         let pj = self.triangle_queue[j];
+        self.triangle_queue_indices[pi] = Some(j);
+        self.triangle_queue_indices[pj] = Some(i);
         self.triangle_queue.swap(i, j);
-        self.triangle_queue_indices.insert(pi, Some(j));
-        self.triangle_queue_indices.insert(pj, Some(i));
         self.triangle_errors.swap(i, j);
     }
 
@@ -140,7 +136,7 @@ impl PriorityQueue {
         let triangle = self.triangle_queue.pop();
         if let Some(triangle) = triangle {
             self.triangle_errors.pop();
-            self.triangle_queue_indices.insert(triangle, None);
+            self.triangle_queue_indices[triangle] = None;
         }
 
         triangle

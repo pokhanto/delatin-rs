@@ -10,6 +10,3 @@ license = "ISC"
 
 [lib]
 name = "delatin"
-
-[dependencies]
-rustc-hash = "2.0.0"

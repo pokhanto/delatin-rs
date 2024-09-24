@@ -15,7 +15,7 @@ pub(crate) struct Triangulation<'a> {
     vertex_points: Vec<Point>,
     /// A vector of vertex points indices, triplets of these indices form triangles.
     triangles: Vec<usize>,
-    /// A vector halfedge indices 
+    /// A vector halfedge indices
     half_edges: Vec<Option<usize>>,
     /// A vector of candidate points
     candidate_points: Vec<Point>,
@@ -49,7 +49,7 @@ impl<'a> Triangulation<'a> {
             triangles: Vec::default(),
             half_edges: Vec::default(),
             candidate_points: Vec::default(),
-            priority_queue: PriorityQueue::default(),
+            priority_queue: PriorityQueue::new(width * height),
         }
     }
 
