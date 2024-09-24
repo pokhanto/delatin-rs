@@ -41,6 +41,7 @@ impl<'a> Triangulation<'a> {
     ///
     /// A new `Triangulation` instance.
     pub(crate) fn new(height_data: &'a [Height], width: usize, height: usize) -> Self {
+        let initial_queue_size = width * height / 4;
         Self {
             height_data,
             width,
@@ -49,7 +50,7 @@ impl<'a> Triangulation<'a> {
             triangles: Vec::default(),
             half_edges: Vec::default(),
             candidate_points: Vec::default(),
-            priority_queue: PriorityQueue::new(width * height),
+            priority_queue: PriorityQueue::new(initial_queue_size),
         }
     }
 

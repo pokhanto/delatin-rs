@@ -13,9 +13,9 @@ pub(crate) struct PriorityQueue {
 }
 
 impl PriorityQueue {
-    pub fn new(queue_len: usize) -> Self {
+    pub fn new(initial_queue_size: usize) -> Self {
         Self {
-            triangle_queue_indices: vec![None; queue_len],
+            triangle_queue_indices: vec![None; initial_queue_size],
             pending_triangle_indices: Vec::default(),
             triangle_queue: Vec::default(),
             triangle_errors: Vec::default(),
@@ -37,6 +37,10 @@ impl PriorityQueue {
     pub fn push(&mut self, triangle_index: usize, error: Error) {
         let queue_length = self.triangle_queue.len();
 
+        if triangle_index >= self.triangle_queue_indices.len() {
+            self.triangle_queue_indices
+                .resize(self.triangle_queue_indices.len() * 2, None);
+        }
         self.triangle_queue_indices[triangle_index] = Some(queue_length);
         self.triangle_queue.push(triangle_index);
         self.triangle_errors.push(error);
@@ -52,7 +56,11 @@ impl PriorityQueue {
     }
 
     pub fn remove(&mut self, requested_triangle_index: usize) {
-        let Some(index) = self.triangle_queue_indices[requested_triangle_index] else {
+        let Some(index) = self
+            .triangle_queue_indices
+            .get(requested_triangle_index)
+            .and_then(|i| *i)
+        else {
             let pending_length = self.pending_triangle_indices.len();
             if let Some(pos) = self
                 .pending_triangle_indices
