@@ -2,7 +2,7 @@
 
 Simple and fast [**TIN**](https://en.wikipedia.org/wiki/Triangulated_irregular_network) generation library, written in Rust. Uses [Delaunay triangulation](https://en.wikipedia.org/wiki/Delaunay_triangulation).
 
-![Result of triangulation](plot/plot.png)
+![Result of triangulation](https://raw.githubusercontent.com/pokhanto/delatin-rs/main/plot/plot.png)
 
 Delatin is a port of Volodymyr Agafonkin's [*delatin*](https://github.com/mapbox/delatin) (JavaScript) and Michael Fogleman's [*hmm*](https://github.com/fogleman/hmm) (C++), which is in turn based on the paper [Fast Polygonal Approximation of Terrains and Height Fields (1995)](http://mgarland.org/files/papers/scape.pdf) by Michael Garland and Paul Heckbert.
 
