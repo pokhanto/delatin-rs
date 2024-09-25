@@ -8,7 +8,22 @@ pub fn main() {
     let json_file_path = Path::new("./data/input.json");
     let file = File::open(json_file_path).unwrap();
     let heights: Vec<f64> = serde_json::from_reader(file).unwrap();
-    let triangles = triangulate(&heights, (width, height), Error(1.0)).unwrap();
+    let (points, triangles) = triangulate(&heights, (width, height), Error(1.0)).unwrap();
+
+    let triangles = triangles
+        .into_iter()
+        .map(|(a, b, c)| {
+            let point_a = points[a];
+            let point_b = points[b];
+            let point_c = points[c];
+
+            let original_index_a = point_a.1 * width + point_a.0;
+            let original_index_b = point_b.1 * width + point_b.0;
+            let original_index_c = point_c.1 * width + point_c.0;
+
+            (original_index_a, original_index_b, original_index_c)
+        })
+        .collect::<Vec<(usize, usize, usize)>>();
 
     plot_triangles(triangles, width, height, "./plot/plot.png").unwrap();
 }

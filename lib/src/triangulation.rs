@@ -59,6 +59,19 @@ impl<'a> Triangulation<'a> {
     /// # Arguments
     ///
     /// * `max_error` - The maximum allowable error for the triangulation process.
+    ///
+    /// # Returns
+    ///
+    /// Tuple containing:
+    /// - points `Vec<(usize, usize)>`: A vector containing all the vertices of the triangulated mesh. Each point corresponds to heights vector index.
+    /// - triangles `Vec<(usize, usize, usize)>`: A vector containing all the triangles of the mesh, each defined by indices into the `points`.
+    ///
+    /// # Errors
+    ///
+    /// - `InvalidDataLengthError` - If the length of the height data does not match the width and height of the grid.
+    /// - `MaxErrorRetrievalError` - If the maximum error is not found in the priority queue.
+    /// - `EmptyQueueError` - If the priority queue is empty during triangulation.
+    ///
     pub(crate) fn run(
         &mut self,
         max_error: Error,

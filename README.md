@@ -9,15 +9,15 @@ Delatin is a port of Volodymyr Agafonkin's [*delatin*](https://github.com/mapbox
 ## Example
 
 ```rust
-use delatin::triangulate;
+use delatin::{triangulate, Error};
 
 let heights = vec![100.1, 123.4, 111.5, 121.4];
 let width = 2;
 let height = 2;
-let max_error = 1.0;
-// triangles is a vector of tuples containing three indices to original height data 
-// every tuple forms a triangle
-let triangles = triangulate(&heights, width, height, max_error)?;
+let max_error = Error(1.0);
+// points `Vec<(usize, usize)>`: A vector containing all the vertices of the triangulated mesh. Each point corresponds to heights vector index.
+// triangles `Vec<(usize, usize, usize)>`: A vector containing all the triangles of the mesh, each defined by indices into the `points`.
+let (points, triangles) = triangulate(&heights, width, height, max_error)?;
 ```
 
 ## Installation

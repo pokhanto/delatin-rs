@@ -101,6 +101,14 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3d7b894f5411737b7867f4827955924d7c254fc9f4d91a6aad6b097804b1018b"
 
 [[package]]
+name = "conversion"
+version = "0.1.0"
+dependencies = [
+ "delatin",
+ "serde_json",
+]
+
+[[package]]
 name = "core-foundation"
 version = "0.9.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -163,7 +171,7 @@ dependencies = [
 
 [[package]]
 name = "delatin"
-version = "0.1.1"
+version = "0.2.0"
 
 [[package]]
 name = "dirs"

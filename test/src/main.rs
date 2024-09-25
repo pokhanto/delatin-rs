@@ -8,10 +8,11 @@ fn main() {
     let heights: Vec<f64> = serde_json::from_reader(file).unwrap();
 
     let start = Instant::now();
-    let triangles = triangulate(&heights, (512, 512), Error(0.2)).unwrap();
+    let (points, triangles) = triangulate(&heights, (512, 512), Error(0.2)).unwrap();
     let duration = start.elapsed();
 
     println!("Time elapsed in delatin triangulation is: {:?}.", duration);
 
+    assert_eq!(points.len(), 16257);
     assert_eq!(triangles.len(), 32147);
 }
