@@ -1,6 +1,6 @@
 [package]
 name = "delatin"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = "Fast TIN generation using Delaunay triangulation."
 documentation = "https://docs.rs/delatin"
